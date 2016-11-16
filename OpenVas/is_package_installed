@@ -1,0 +1,42 @@
+#!/bin/bash
+#
+# ------------------------------------------------------------------------------
+## DESCRIPTION
+# ------------------------------------------------------------------------------
+#   ${1:Script Description}
+#
+# ------------------------------------------------------------------------------
+## ARGUMENTS
+# ------------------------------------------------------------------------------
+#   ${2:Script Arguments}
+#
+# ==============================================================================
+
+# check if Debian-based
+if [ ! $(cat /etc/os-release | grep -ci debian) -eq 0 ]; then
+    echo "Operating system not Debian-based."
+    echo "Cannot check package availability."
+    return 1
+fi
+
+# check arguments
+if [ "$1" -eq ""]; then
+    echo "Must pass in a valid package name."
+    echo "No argument provided"
+    return 1
+fi
+
+local package="$1"
+local result=$(dpkg -l | grep '^ii\s+"$package"\s+')
+
+echo "Checking for package: $package"
+
+if [ $result -eq 1 ]; then
+    return 1
+elif [ $result -gt 1 ]; then
+    echo "More then one result was returned for package: $package"
+    echo "Returning false"
+    return 0
+fi
+
+return 0

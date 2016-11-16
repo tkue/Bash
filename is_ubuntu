@@ -1,0 +1,26 @@
+#!/bin/bash
+#
+## DESCRIPTION
+#
+# Checks if operating system is Ubuntu-based
+
+is_debian=$(is_debian)
+
+if [ is_debian -eq 0 ]; then 
+    echo "Operating system not even Debian-based"
+    return 0
+fi
+
+ search_term="'NAME=\"Ubuntu\"'"
+ result=$(cat /etc/os-release | grep -c $search_term)
+
+if [ $result -eq 1 ]; then
+    return 1
+elif [ $result -gt 1 ]; then 
+    echo "More than one result returned when searching for: "
+    echo "$search_term"
+    echo "Going to assume true"
+    return 1
+fi 
+
+return 0
