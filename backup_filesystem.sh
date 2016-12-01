@@ -1,13 +1,16 @@
 #!/bin/bash
 
-#!/bin/bash
+LOCAL_BAK_DIR="/backup/fs-bak_20161128/"
 
-# Dir for packages, apt keys, hosts, etc. 
-LOCAL_BAK_DIR="$HOME/backup/filesystem/"
+if [ ! `id -u` -eq 0 ]; then
+	echo "Need to be root"
+	exit 1
+fi
 
-if [[ ! -d $LOCAL_BAK_DIR ]]; then 
+if [[ ! -d $LOCAL_BAK_DIR ]]; then
 	mkdir -p $LOCAL_BAK_DIR
 fi
 
-# Get packages
-sudo dpkg --get-selections > 
+rsync -aAXv --exclude={"/dev/*","/proc/*","/sys/*","/tmp/*","/run/*","/mnt/*","/media/*","/lost+found"} / "$LOCAL_BAK_DIR"
+
+tar -czvf /backup/fs-bak_20161128.tar.gz /backup/fs-bak_20161128/
