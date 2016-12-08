@@ -14,3 +14,4 @@ fi
 rsync -aAXv --exclude={"/dev/*","/proc/*","/sys/*","/tmp/*","/run/*","/mnt/*","/media/*","/lost+found"} / "$LOCAL_BAK_DIR"
 
 tar -czvf /backup/fs-bak_20161128.tar.gz /backup/fs-bak_20161128/
+#openssl rsautl -encrypt -inkey publickey.pem -pubin -in key.bin -out key.bin.enc
